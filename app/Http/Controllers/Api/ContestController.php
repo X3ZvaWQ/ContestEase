@@ -61,8 +61,8 @@ class ContestController extends Controller
         ]);
         $name = $request->input('name',null);
         $config = [
-            'start' => $request->input('start'),
-            'end'   => $request->input('end'),
+            'begin_time' => $request->input('start'),
+            'end_time'   => $request->input('end'),
         ];
         if(!empty($name)){
             $config['name'] = $name;

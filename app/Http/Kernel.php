@@ -62,6 +62,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'contest.admin' => \App\Http\Middleware\Contest\IsAdmin::class,
         'contest.running' => \App\Http\Middleware\Contest\IsRunning::class,
+        'after.updateProblemsMD5' => \App\Http\Middleware\After\UpdateProblemsMD5::class,
+        'after.updateNoticesMD5' => \App\Http\Middleware\After\UpdateNoticesMD5::class,
     ];
 
     /**

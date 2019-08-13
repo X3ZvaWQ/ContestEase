@@ -40,7 +40,7 @@ class ProblemController extends Controller
         return response()->json([
             'ret'   => 200,
             'desc'  => 'successful',
-            'data'  => null
+            'data'  => null,
         ]);
     }
 

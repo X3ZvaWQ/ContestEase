@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 use Cache;
@@ -19,14 +19,23 @@ class Contest extends Model
         if(isset($config['name'])){
             $contest->name = $config['name'];
         }
-        $contest->begin_time = $config['begin_time'];
-        $contest->end_time   = $config['end_time'];
+        $contest->begin_time = date('Y-m-d H:i:s',$config['begin_time']);
+        $contest->end_time   = date('Y-m-d H:i:s',$config['end_time']);
         $contest->save();
     }
 
     public static function status()
     {
         $contest = static::find(1);
+        if(empty($contest)){
+            return [
+                'name'         => '',
+                'start'        => 0,
+                'end'          => 0,
+                'problems_md5' => Cache::get('problems_md5',''),
+                'notices_md5'  => Cache::get('notices_md5',''),
+            ];
+        }
         return [
             'name'         => $contest->name,
             'start'        => strtotime($contest->begin_time),

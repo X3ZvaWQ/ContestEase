@@ -7,7 +7,7 @@ use Cache;
 
 class Announcement extends Model
 {
-    public static function set($config)
+    public static function modify($config)
     {
         if(isset($config['id'])){
             $announcement = self::find($config['id']);
@@ -18,8 +18,6 @@ class Announcement extends Model
         $announcement->title = $config['title'];
         $announcement->content = $config['content'];
         $announcement->save();
-        $announcements = self::fetch();
-        Cache::put('notices_md5',json_encode($announcements));
     }
 
     public static function fetch()

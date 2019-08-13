@@ -13,24 +13,23 @@ class Problem extends Model
             $problem = self::find($config['id']);
         }
         if(empty($announcement)){
-            $problem = new Announcement;
+            $problem = new Problem;
         }else{
             $problem->options()->delete();
         }
         $problem->title = $config['title'];
         $problem->content = $config['content'];
-        if(!empty($config['option'])){
+        $problem->save();
+        if(!empty($config['options'])){
             $options = [];
             foreach($config['options'] as $option){
                 $options[] = [
-                    'content' => $option,
+                    'problem_id' => $problem->id,
+                    'content'    => $option,
                 ];
             }
             $problem->options()->createMany($options);
         }
-        $problem->save();
-        $problems = self::fetch();
-        Cache::put('problems_md5',json_encode($problems));
     }
 
     public static function fetch()

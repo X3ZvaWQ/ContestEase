@@ -21,12 +21,12 @@ Route::group(['middleware' => 'auth:api', 'namespace' => 'Api'], function () {
     Route::post('submit', 'ContestController@submit');
 
     Route::group(['prefix' => 'admin','middleware' => 'contest.admin'], function () {
-        Route::post('modifyNotice', 'NoticeController@modify');
+        Route::post('modifyNotice', 'NoticeController@modify')->middleware('after.updateNoticesMD5');
         Route::post('modifyDue', 'ContestController@modify');
-        Route::post('modifyQuestions', 'ProblemController@modify');
-        Route::post('addSource', 'ProblemController@addSource');
-        Route::post('deleteSource', 'ProblemController@deleteSource');
-        Route::post('modifyQuestionsMassively', 'ProblemController@modifyMassively');
+        Route::post('modifyQuestions', 'ProblemController@modify')->middleware('after.updateProblemsMD5');;
+        Route::post('addSource', 'ProblemController@addSource')->middleware('after.updateProblemsMD5');;
+        Route::post('deleteSource', 'ProblemController@deleteSource')->middleware('after.updateProblemsMD5');;
+        Route::post('modifyQuestionsMassively', 'ProblemController@modifyMassively')->middleware('after.updateProblemsMD5');;
     });
 });
 
