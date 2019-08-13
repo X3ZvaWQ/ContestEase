@@ -14,6 +14,7 @@ class Contest extends Model
         $contest = static::find(1);
         if(empty($contest)){
             $contest = new Contest;
+            $contest->name = '计算姬基础知识大赛';
             $contest->id = 1;
         }
         if(isset($config['name'])){
