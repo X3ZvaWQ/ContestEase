@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\After;
 
+use Cache;
 use Closure;
 use App\Models\Eloquent\Announcements;
 
@@ -19,7 +20,7 @@ class UpdateNoticesMD5
         $response = $next($request);
 
         $announcements = Announcements::fetch();
-        Cache::put('notices_md5',json_encode($announcements));
+        Cache::put('notices_md5',md5(json_encode($announcements)));
 
         return $response;
 

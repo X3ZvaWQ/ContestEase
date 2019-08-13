@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Eloquent\Problem;
+use App\Models\Eloquent\Image;
+use App\Models\Eloquent\Attachment;
+use Storage;
 
 class ProblemController extends Controller
 {
@@ -46,17 +49,15 @@ class ProblemController extends Controller
 
     public function modifyMassively(Request $request)
     {
-        $request->validate([
-            'questions.title'   => 'required|string',
-            'questions.content' => 'required|string',
-        ]);
         foreach ($request->input('questions') as $question) {
-            $config = [
-                'title'   => $question['title'],
-                'content' => $question['content'],
-                'options' => $question['options'],
-            ];
-            Problem::modify($config);
+            if(!empty($question['title']) && !empty($question['content'])){
+                $config = [
+                    'title'   => $question['title'],
+                    'content' => $question['content'],
+                    'options' => $question['options'],
+                ];
+                Problem::modify($config);
+            }
         }
         return response()->json([
             'ret'   => 200,
@@ -135,24 +136,15 @@ class ProblemController extends Controller
     public function deleteSource(Request $request)
     {
         $request->validate([
-            'id'      => 'required|integer',
             'url'     => 'required|string'
         ]);
-        $problem = Problem::find($request->input('id'));
-        if(empty($problem)){
-            return response()->json([
-                'ret'   => 404,
-                'desc'  => 'Problem Not Found.',
-                'data'  => null
-            ]);
-        }
-        $images = $problem->images()->where('url',$request->input('url'));
+        $images = Image::where('url',$request->input('url'))->first();
         if(!empty($images)){
             $old_path = $images->url;
             Storage::disk('static')->delete($old_path);
             $images->delete();
         }
-        $attachments = $problem->attachments()->where('url',$request->input('url'));
+        $attachments = Attachment::where('url',$request->input('url'))->first();
         if(!empty($attachments)){
             $old_path = $attachments->url;
             Storage::disk('static')->delete($old_path);
