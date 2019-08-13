@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Contest extends Model
 {
@@ -19,16 +20,34 @@ class Contest extends Model
             $contest->name = $config['name'];
         }
         $contest->begin_time = $config['begin_time'];
-        $contest->end_time = $config['end_time'];
+        $contest->end_time   = $config['end_time'];
         $contest->save();
     }
 
-    public static function time()
+    public static function status()
     {
-        $contest = self::find(1);
+        $contest = static::find(1);
         return [
-            'start' => strtotime($contest->begin_time),
-            'end'   => strtotime($contest->end_time),
+            'name'         => $contest->name,
+            'start'        => strtotime($contest->begin_time),
+            'end'          => strtotime($contest->end_time),
+            'problems_md5' => Cache::get('problems_md5',''),
+            'notices_md5'  => Cache::get('notices_md5',''),
         ];
+    }
+
+    public static function running()
+    {
+        $contest = static::find(1);
+        if(empty($contest)){
+            return false;
+        }
+        $begin_time = strtotime($contest->begin_time);
+        $end_time   = strtotime($contest->end_time);
+        $now_time   = time();
+        if($now_time >= $begin_time && $now_time <= $end_time){
+            return true;
+        }
+        return false;
     }
 }

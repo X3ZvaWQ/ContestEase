@@ -20,7 +20,8 @@ class Answer extends Model
                     'id'          => $answer->id,
                     'problem_id'  => $answer->problem_id,
                     'option'      => $answer->option,
-                    'content'     => $answer->content
+                    'content'     => $answer->content,
+                    'update_time' => strtotime($answer->updated_at),
                 ];
             }
             return $result;

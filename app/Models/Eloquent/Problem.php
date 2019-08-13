@@ -3,10 +3,11 @@
 namespace App\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Problem extends Model
 {
-    public static function set($config)
+    public static function modify($config)
     {
         if(isset($config['id'])){
             $problem = self::find($config['id']);
@@ -18,15 +19,18 @@ class Problem extends Model
         }
         $problem->title = $config['title'];
         $problem->content = $config['content'];
-        $options = [];
-        foreach($config['options'] as $option){
-            $options[] = [
-                'content' => $option,
-            ];
+        if(!empty($config['option'])){
+            $options = [];
+            foreach($config['options'] as $option){
+                $options[] = [
+                    'content' => $option,
+                ];
+            }
+            $problem->options()->createMany($options);
         }
-        $problem->options()->createMany($options);
         $problem->save();
-
+        $problems = self::fetch();
+        Cache::put('problems_md5',json_encode($problems));
     }
 
     public static function fetch()

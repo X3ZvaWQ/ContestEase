@@ -12,11 +12,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['middleware' => 'auth:api', 'namespace' => 'Api'], function () {
+    Route::get('user', 'UserController@info');
     Route::get('status', 'ContestController@status');
     Route::get('notice', 'NoticeController@fetch');
     Route::get('questions', 'ProblemController@list');
@@ -28,7 +25,7 @@ Route::group(['middleware' => 'auth:api', 'namespace' => 'Api'], function () {
         Route::post('modifyDue', 'ContestController@modify');
         Route::post('modifyQuestions', 'ProblemController@modify');
         Route::post('addSource', 'ProblemController@addSource');
-        Route::delete('deleteSource', 'ProblemController@deleteSource');
+        Route::post('deleteSource', 'ProblemController@deleteSource');
         Route::post('modifyQuestionsMassively', 'ProblemController@modifyMassively');
     });
 });

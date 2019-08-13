@@ -3,6 +3,7 @@
 namespace App\Models\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Cache;
 
 class Announcement extends Model
 {
@@ -17,6 +18,8 @@ class Announcement extends Model
         $announcement->title = $config['title'];
         $announcement->content = $config['content'];
         $announcement->save();
+        $announcements = self::fetch();
+        Cache::put('notices_md5',json_encode($announcements));
     }
 
     public static function fetch()
