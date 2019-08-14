@@ -84,31 +84,41 @@ class ProblemController extends Controller
 
     public function modifyMassively(Request $request)
     {
-        foreach ($request->input('questions') as $question) {
-            if(!empty($question['title']) && !empty($question['content'])){
-                $config = [
-                    'title'   => $question['title'],
-                    'content' => $question['content'],
-                    'options' => $question['options'],
-                ];
-                Problem::modify($config);
+        if(is_array($request->input('questions'))){
+            foreach ($request->input('questions') as $question) {
+                if(!empty($question['title']) && !empty($question['content'])){
+                    $config = [
+                        'title'   => $question['title'],
+                        'content' => $question['content'],
+                        'options' => $question['options'],
+                    ];
+                    Problem::modify($config);
+                }
             }
+            return response()->json([
+                'ret'   => 200,
+                'desc'  => 'successful',
+                'data'  => null
+            ]);
+        }else{
+            return response()->json([
+                'ret'   => 1003,
+                'desc'  => 'error parms',
+                'data'  => null
+            ]);
         }
-        return response()->json([
-            'ret'   => 200,
-            'desc'  => 'successful',
-            'data'  => null
-        ]);
+
     }
 
     public function addSource(Request $request)
     {
-        $request->validate([
-            'id'      => 'required|integer',
-            'type'    => 'required|string',
-            'name'    => 'required|string',
-            'source'  => 'required|file'
-        ]);
+        if(!$request->has('problem_id') || !$request->has('type') || !$request->has('name') || !$request->has('source')){
+            return response()->json([
+                'ret'   => 1004,
+                'desc'  => 'Params Missings.',
+                'data'  => null
+            ]);
+        }
         $type = $request->input('type');
         if(!in_array($type,['image','attachment'])){
             return response()->json([
@@ -117,7 +127,7 @@ class ProblemController extends Controller
                 'data'  => null
             ]);
         }
-        $problem = Problem::find($request->input('id'));
+        $problem = Problem::find($request->input('problem_id'));
         if(empty($problem)){
             return response()->json([
                 'ret'   => 404,
@@ -135,7 +145,7 @@ class ProblemController extends Controller
                     'data'  => null
                 ]);
             }
-            $path = '/'.$file->store('image','static');
+            $path = '/static/'.$file->store('image','static');
             $problem->images()->create([
                 'name'       => $request->input('name'),
                 'url'        => $path,
@@ -143,7 +153,9 @@ class ProblemController extends Controller
             return response()->json([
                 'ret'   => 200,
                 'desc'  => 'successful',
-                'data'  => null
+                'data'  => [
+                    'url' => $path,
+                ]
             ]);
         }else{
             //attachment
@@ -155,7 +167,7 @@ class ProblemController extends Controller
                     'data'  => null
                 ]);
             }
-            $path = '/'.$file->store('attachment','static');
+            $path = '/static/'.$file->store('attachment','static');
             $problem->attachments()->create([
                 'name'       => $request->input('name'),
                 'url'        => $path,
@@ -163,16 +175,22 @@ class ProblemController extends Controller
             return response()->json([
                 'ret'   => 200,
                 'desc'  => 'successful',
-                'data'  => null
+                'data'  => [
+                    'url' => $path,
+                ]
             ]);
         }
     }
 
     public function deleteSource(Request $request)
     {
-        $request->validate([
-            'url'     => 'required|string'
-        ]);
+        if(!$request->has('url')){
+            return response()->json([
+                'ret'   => 1004,
+                'desc'  => 'Params Missings.',
+                'data'  => null
+            ]);
+        }
         $images = Image::where('url',$request->input('url'))->first();
         if(!empty($images)){
             $old_path = $images->url;
