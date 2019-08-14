@@ -21,10 +21,18 @@ class ContestController extends Controller
     public function submitted(Request $request)
     {
         $user_id = $request->user()->id;
+        $answers = Answer::fetch($user_id);
+        foreach ($answers as &$answer) {
+            foreach ($answer as $key => &$value) {
+                if(is_null($value)){
+                    $value = '';
+                }
+            }
+        }
         return response()->json([
             'ret'  => 200,
             'desc' => 'successful',
-            'data' => Answer::fetch($user_id),
+            'data' => $answers,
         ]);
     }
 
