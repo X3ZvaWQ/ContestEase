@@ -39,7 +39,7 @@ class ContestController extends Controller
         $config = [
             'problem_id' => $request->input('problem_id'),
             'user_id'    => $request->user()->id,
-            'content'    => $request->input('content'),
+            'content'    => $request->input('content',''),
             'option'     => $request->input('option','')
         ];
 
