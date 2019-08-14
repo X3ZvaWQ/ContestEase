@@ -22,29 +22,62 @@ class ProblemController extends Controller
 
     public function modify(Request $request)
     {
-        $request->validate([
-            'id'      => 'integer',
-            'title'   => 'required|string',
-            'content' => 'required|string',
-        ]);
-        $id = $request->input('id');
-        $options = $request->input('options');
-        $config = [
-            'title'   => $request->input('title'),
-            'content' => $request->input('content')
-        ];
-        if(!empty($id)){
-            $config['id'] = $id;
+        if($request->has('id')){
+            if($request->has('title') && $request->has('content')){
+                //modify
+                $config = [
+                    'id'      => $request->input('id'),
+                    'title'   => $request->input('title'),
+                    'content' => $request->input('content')
+                ];
+                Problem::modify($config);
+                return response()->json([
+                    'ret'   => 200,
+                    'desc'  => 'successful',
+                    'data'  => null,
+                ]);
+            }else{
+                //delete
+                $problem = Problem::find($request->input('id'));
+                if(!empty($problem)){
+                    $problem->options()->delete();
+                    $problem->images()->delete();
+                    $problem->attachments()->delete();
+                    $problem->datele();
+                    return response()->json([
+                        'ret'   => 200,
+                        'desc'  => 'successful',
+                        'data'  => null,
+                    ]);
+                }else{
+                    return response()->json([
+                        'ret'   => 404,
+                        'desc'  => 'Problem Not Found',
+                        'data'  => null,
+                    ]);
+                }
+            }
+        }else{
+            if($request->has('title') && $request->has('content')){
+                //add
+                $config = [
+                    'title'   => $request->input('title'),
+                    'content' => $request->input('content')
+                ];
+                Problem::modify($config);
+                return response()->json([
+                    'ret'   => 200,
+                    'desc'  => 'successful',
+                    'data'  => null,
+                ]);
+            }else{
+                return response()->json([
+                    'ret'   => 1003,
+                    'desc'  => 'Invalid Params',
+                    'data'  => null,
+                ]);
+            }
         }
-        if(!empty($options)){
-            $config['options'] = $options;
-        }
-        Problem::modify($config);
-        return response()->json([
-            'ret'   => 200,
-            'desc'  => 'successful',
-            'data'  => null,
-        ]);
     }
 
     public function modifyMassively(Request $request)
