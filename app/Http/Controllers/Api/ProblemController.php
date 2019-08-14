@@ -28,7 +28,8 @@ class ProblemController extends Controller
                 $config = [
                     'id'      => $request->input('id'),
                     'title'   => $request->input('title'),
-                    'content' => $request->input('content')
+                    'content' => $request->input('content'),
+                    'options' => $request->input('options',[])
                 ];
                 Problem::modify($config);
                 return response()->json([
@@ -62,7 +63,8 @@ class ProblemController extends Controller
                 //add
                 $config = [
                     'title'   => $request->input('title'),
-                    'content' => $request->input('content')
+                    'content' => $request->input('content'),
+                    'options' => $request->input('options',[])
                 ];
                 Problem::modify($config);
                 return response()->json([
