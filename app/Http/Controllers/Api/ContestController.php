@@ -32,8 +32,6 @@ class ContestController extends Controller
     {
         $request->validate([
             'problem_id' => 'required|integer',
-            'option'     => 'string',
-            'content'    => 'string',
         ]);
 
         $config = [
