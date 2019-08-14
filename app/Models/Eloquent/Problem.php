@@ -12,7 +12,7 @@ class Problem extends Model
         if(isset($config['id'])){
             $problem = self::find($config['id']);
         }
-        if(empty($announcement)){
+        if(empty($problem)){
             $problem = new Problem;
         }else{
             $problem->options()->delete();
