@@ -43,7 +43,7 @@ class ProblemController extends Controller
                     $problem->options()->delete();
                     $problem->images()->delete();
                     $problem->attachments()->delete();
-                    $problem->datele();
+                    $problem->delete();
                     return response()->json([
                         'ret'   => 200,
                         'desc'  => 'successful',
