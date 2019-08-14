@@ -33,17 +33,16 @@ class ContestController extends Controller
         $request->validate([
             'problem_id' => 'required|integer',
             'option'     => 'string',
-            'content'    => 'string',
+            'content'    => 'required|string',
         ]);
-        $option = $request->input('option',null);
+
         $config = [
             'problem_id' => $request->input('problem_id'),
             'user_id'    => $request->user()->id,
             'content'    => $request->input('content'),
+            'option'     => $request->input('option','')
         ];
-        if(!empty($option)){
-            $config['option'] = $option;
-        }
+
         Answer::submit($config);
         return response()->json([
             'ret'   => 200,
