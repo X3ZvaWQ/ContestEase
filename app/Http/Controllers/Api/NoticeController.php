@@ -19,11 +19,6 @@ class NoticeController extends Controller
 
     public function modify(Request $request)
     {
-        $request->validate([
-            'id'      => 'integer',
-            'title'   => 'required|string',
-            'content' => 'required|string',
-        ]);
         if($request->has('id')){
             if($request->has('title') && $request->has('content')){
                 //modify
