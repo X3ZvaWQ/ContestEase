@@ -24,19 +24,53 @@ class NoticeController extends Controller
             'title'   => 'required|string',
             'content' => 'required|string',
         ]);
-        $id = $request->input('id');
-        $config = [
-            'title'   => $request->input('title'),
-            'content' => $request->input('content')
-        ];
-        if(!empty($id)){
-            $config['id'] = $id;
+        if($request->has('id')){
+            if($request->has('title') && $request->has('content')){
+                //modify
+                $config = [
+                    'id'      => $request->input('id'),
+                    'title'   => $request->input('title'),
+                    'content' => $request->input('content')
+                ];
+                Announcement::modify($config);
+                return response()->json([
+                    'ret'   => 200,
+                    'desc'  => 'successful',
+                    'data'  => null
+                ]);
+            }else{
+                //delete
+                $notice = Announcement::find($request->input('id'));
+                if(!empty($notice)){
+                    $notice->delete();
+                }
+                return response()->json([
+                    'ret'   => 200,
+                    'desc'  => 'successful',
+                    'data'  => null
+                ]);
+            }
+        }else{
+            if($request->has('title') && $request->has('content')){
+                //create
+                $config = [
+                    'title'   => $request->input('title'),
+                    'content' => $request->input('content')
+                ];
+                Announcement::modify($config);
+                return response()->json([
+                    'ret'   => 200,
+                    'desc'  => 'successful',
+                    'data'  => null
+                ]);
+            }else{
+                //error
+                return response()->json([
+                    'ret'   => 1003,
+                    'desc'  => 'Invalid Params',
+                    'data'  => null,
+                ]);
+            }
         }
-        Announcement::modify($config);
-        return response()->json([
-            'ret'   => 200,
-            'desc'  => 'successful',
-            'data'  => null
-        ]);
     }
 }
