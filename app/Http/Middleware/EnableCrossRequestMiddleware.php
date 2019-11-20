@@ -25,7 +25,7 @@ class EnableCrossRequestMiddleware
             header('Access-Control-Allow-Origin: *');
             header("Access-Control-Allow-Credentials: false");
             header("Access-Control-Allow-Methods: POST");
-            header("Access-Control-Allow-Headers: Accept,Content-Type,Authorazation");
+            header("Access-Control-Allow-Headers: Accept,Content-Type,Authorization");
             header("Access-Control-Expose-Headers: *");
         }
 
