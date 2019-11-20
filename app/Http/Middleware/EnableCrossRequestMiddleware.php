@@ -15,11 +15,19 @@ class EnableCrossRequestMiddleware
      */
     public function handle($request, Closure $next)
     {
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Credentials: false");
-        header("Access-Control-Allow-Methods: *");
-        header("Access-Control-Allow-Headers: *");
-        header("Access-Control-Expose-Headers: *");
+        if($request->method() != 'OPTIONS'){
+            header('Access-Control-Allow-Origin: *');
+            header("Access-Control-Allow-Credentials: false");
+            header("Access-Control-Allow-Methods: *");
+            header("Access-Control-Allow-Headers: *");
+            header("Access-Control-Expose-Headers: *");
+        }else{
+            header('Access-Control-Allow-Origin: *');
+            header("Access-Control-Allow-Credentials: false");
+            header("Access-Control-Allow-Methods: POST");
+            header("Access-Control-Allow-Headers: Accept,Content-Type");
+            header("Access-Control-Expose-Headers: *");
+        }
 
         return $next($request);
     }
