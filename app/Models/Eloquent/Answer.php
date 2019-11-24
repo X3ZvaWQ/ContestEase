@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    public $timestamps = false;
+    protected $guarded = [];
+
     public static function fetch($user_id)
     {
         $ret = static::where([
