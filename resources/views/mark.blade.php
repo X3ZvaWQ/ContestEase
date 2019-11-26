@@ -124,7 +124,6 @@
     window.addEventListener("load",function() {
         loadJsAsync("https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs/loader.js");
         hljs.initHighlighting();
-        requestAnswer();
     },false);
 
     function loadJsAsync(url){
@@ -167,6 +166,7 @@
                 });
                 monaco.editor.setModelLanguage(editor.getModel(), "plaintext");
                 $("table").addClass("table");
+                requestAnswer();
             });
         }
 
