@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/home', function () {
+    return view('mark');
+});
+
+
 Route::any('/password/{any}', function ($any) {
     if(request()->method() == 'GET') {
         return redirect('/');
@@ -35,8 +40,6 @@ Route::group(['prefix' => 'mark', 'as' => 'mark.', 'middleware' => ['auth','exam
     Route::post('/request', 'MarkController@request')->middleware('problem.exist')->name('request');
 
 });
-
-
 
 Auth::routes(['register' => false]);
 

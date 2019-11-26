@@ -67,7 +67,12 @@
             <div class="container">
                 <div style="width:100%;">
                     <h5 class="pb-title"><i class="MDI script"></i> 欢迎，{{auth()->user()->name}} </h5>
-                    <p class="mb-3 text-center"><form action="/logout" method="POST">@csrf<button class="bth btn-danger" type="submit"><a>注销</a></button></form></p>
+                    <div class="mb-3 text-center">
+                        <form style="display:inline-block" action="/logout" method="POST">
+                            @csrf
+                            <button class="bth btn-danger" type="submit">注销</button>
+                        </form>
+                    </div>
                     <paper-card class="mb-3">
                         <h5><i class="MDI note"></i> 题干</a></h5>
                         <div id="markdown_container"></div>
@@ -117,7 +122,6 @@
     var judging=false;
 
     window.addEventListener("load",function() {
-        $("#markdown_container").html(marked("**11**22***33****4* \n ```php \n echo 2333; \n  ```"));
         loadJsAsync("https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs/loader.js");
         hljs.initHighlighting();
         requestAnswer();

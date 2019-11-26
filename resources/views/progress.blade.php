@@ -1,6 +1,14 @@
 <style>
-    div.progress-box {
+    progress-card{
+        display: block;
+        user-select: none;
+        margin-bottom: 1rem;
+        background: #fafafa;
+        cursor: pointer;
+    }
 
+    progress-card:hover{
+        background-color: #f0f0f0
     }
 
     div.progress-box::-webkit-scrollbar-button{
@@ -32,7 +40,7 @@
 </style>
 
 <div class="progress-box">
-    
+
 </div>
 
 
@@ -59,12 +67,12 @@
                     $('div.progress-box').html('');
                     Object.keys(data).forEach(function(key){
                         $('div.progress-box').append(`
-                            <div id="${key}" class="total pb-4">
+                            <progress-card id="${key}" class="total pb-4">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ${data[key].progress}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div> 
+                                </div>
                                 <small class="text-muted">${data[key].title}(${data[key].group}) ${data[key].progress}% ${data[key].solved}/${data[key].all}(${data[key].marking})</small>
-                            </div>
+                            </progress-card>
                         `);
                     });
                 } else {
