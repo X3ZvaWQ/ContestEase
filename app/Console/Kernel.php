@@ -7,6 +7,7 @@ use App\Models\Eloquent\AnswerDispatch;
 use App\Models\Eloquent\Problem;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Cache;
 
 class Kernel extends ConsoleKernel
 {
