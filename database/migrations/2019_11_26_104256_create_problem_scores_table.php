@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMarksTable extends Migration
+class CreateProblemScoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateMarksTable extends Migration
      */
     public function up()
     {
-        Schema::create('marks', function (Blueprint $table) {
+        Schema::create('problem_scores', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('answer_id');
-            $table->bigInteger('user_id');
-            $table->integer('score');
-            $table->text('remark');
-            $table->boolean('interesting');
+            $table->bigInteger('problem_id');
+            $table->text('standard');
+            $table->integer('max_score');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateMarksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marks');
+        Schema::dropIfExists('problem_scores');
     }
 }

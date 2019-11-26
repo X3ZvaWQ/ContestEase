@@ -3,6 +3,10 @@
 namespace App;
 
 use App\Models\Eloquent\Answer;
+use App\Models\Eloquent\Problem;
+use App\Models\Eloquent\GroupProblem;
+
+
 
 class Cmd
 {
@@ -56,5 +60,16 @@ class Cmd
             }
         }
         echo "{$i[0]} updates {$i[1]} no gogogo {$i[2]} oudated \n";
+    }
+
+    public static function aaa()
+    {
+        foreach(Problem::get() as $p)
+        {
+            GroupProblem::insert([
+                'group_id' => 1,
+                'problem_id' => $p->id
+            ]);
+        } 
     }
 }

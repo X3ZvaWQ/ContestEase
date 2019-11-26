@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
-    public $timestamps = false;
     protected $guarded = [];
 
     public static function fetch($user_id)
@@ -50,5 +49,15 @@ class Answer extends Model
         }
 
         $answer->save();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Eloquent\User');
+    }
+
+    public function problem()
+    {
+        return $this->belongsTo('App\Models\Eloquent\Problem');
     }
 }

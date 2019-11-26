@@ -19,7 +19,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\EnableCrossRequestMiddleware::class,
         \RunningTime\Middleware\RunningTimeMiddleware::class
     ];
 
@@ -42,6 +41,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            \App\Http\Middleware\EnableCrossRequestMiddleware::class,
         ],
     ];
 
@@ -66,6 +66,10 @@ class Kernel extends HttpKernel
         'contest.running' => \App\Http\Middleware\Contest\IsRunning::class,
         'after.updateProblemsMD5' => \App\Http\Middleware\After\UpdateProblemsMD5::class,
         'after.updateNoticesMD5' => \App\Http\Middleware\After\UpdateNoticesMD5::class,
+        'examiners'  => \App\Http\Middleware\Mark\Examiners::class,
+        'problem.exist' => \App\Http\Middleware\Problem\Exist::class,
+        'answer.exist' => \App\Http\Middleware\Answer\Exist::class,
+
     ];
 
     /**

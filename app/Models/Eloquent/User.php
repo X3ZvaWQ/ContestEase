@@ -46,4 +46,13 @@ class User extends Authenticatable
             'is_admin' => $this->is_admin,
         ];
     }
+
+    public function getGroupAttribute()
+    {
+        $group_member = GroupMember::where('user_id',$this->id)->first();
+        if(!empty($group_member)) {
+            return Group::find($group_member->group_id);
+        }
+        return null;
+    }
 }

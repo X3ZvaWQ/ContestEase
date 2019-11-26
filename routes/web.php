@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::any('/password/{any}', function ($any) {
@@ -26,6 +26,17 @@ Route::any('/password/{any}', function ($any) {
         ], 403);
     }
 });
+
+Route::group(['prefix' => 'mark', 'as' => 'mark.', 'middleware' => ['auth','examiners']], function () {
+    Route::get('/', 'MarkController@index')->name('index');
+
+    Route::post('/submit', 'MarkController@mark')->middleware('answer.exist')->name('mark');
+    Route::post('/progress', 'MarkController@progress')->name('progress');
+    Route::post('/request', 'MarkController@request')->middleware('problem.exist')->name('request');
+
+});
+
+
 
 Auth::routes(['register' => false]);
 
