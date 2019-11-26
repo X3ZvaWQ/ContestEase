@@ -120,6 +120,7 @@
     var editor;
     var user_id=0;
     var judging=false;
+    var default_id = null;
 
     window.addEventListener("load",function() {
         loadJsAsync("https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs/loader.js");
@@ -222,7 +223,13 @@
             success: function(ret){
                 console.log(ret);
                 if(ret.ret == '200') {
-                    requestAnswer();
+                    if(default_id != null) {
+                        requestAnswer({
+                            problem_id : default_id
+                        });
+                    }else{
+                        requestAnswer();
+                    }
                     $('#pb_score').val('');
                 } else {
                     alert(ret.ret + ' : ' + ret.desc);
@@ -234,5 +241,6 @@
             }
         });
     }
+
 </script>
 @endsection

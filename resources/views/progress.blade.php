@@ -1,13 +1,13 @@
 <style>
     progress-card{
         display: block;
-        user-select: none;
         margin-bottom: 1rem;
-        background: #fafafa;
+    }
+    progress-card:not(:first-of-type){
+        user-select: none;
         cursor: pointer;
     }
-
-    progress-card:hover{
+    progress-card:not(:first-of-type):hover{
         background-color: #f0f0f0
     }
 
@@ -75,6 +75,7 @@
                             </progress-card>
                         `);
                     });
+                    registerEvent();
                 } else {
                     console.log(ret);
                     alert('progress读取炸了,F12打开控制台截图告诉我发生了什么吧(');
@@ -83,6 +84,24 @@
             error: function(ret){
                 console.log(ret);
                 alert('progress读取炸了,F12打开控制台截图告诉我发生了什么吧(');
+            }
+        });
+    }
+
+    function registerEvent (){
+        $('progress-card').on('click',function(){
+            var id = $(this).attr('id');
+            id = parseInt(id.substr(1));
+            if(isNaN(id)) {
+                return;
+            }
+            var confirm = window.confirm('是否要切换到目标题目？切换之后在下一次刷新该页面之前将会一直拉取目标题目的答卷。');
+            if(confirm){
+                var default_id = id;
+                requestAnswer({
+                    force : true,
+                    problem_id : id
+                });
             }
         });
     }

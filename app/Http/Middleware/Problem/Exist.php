@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Problem;
 
+use App\Models\Eloquent\Problem;
 use Closure;
 
 class Exist

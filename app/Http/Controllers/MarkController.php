@@ -44,7 +44,6 @@ class MarkController extends Controller
         $answer_dispatch->solved = true;
         $answer_dispatch->score  = $score*10;
         $answer_dispatch->save();
-        $this->updateProgress($answer->problem->id);
         return response()->json([
             'ret'     => 200,
             'desc'    => '成功',
@@ -56,7 +55,11 @@ class MarkController extends Controller
     {
         $progress = json_decode(Cache::get('progress'), true);
         if(empty($progress)) {
-            $this->updateProgress();
+            return response()->json([
+                'ret'  => 200,
+                'desc' => 'success',
+                'data' => []
+            ], 200);
         }
         return response()->json([
             'ret'  => 200,
@@ -87,7 +90,6 @@ class MarkController extends Controller
                     ]
                 ], 200);
             }else{
-                $this->updateProgress($dispatched_answer->answer->problem->id);
                 $dispatched_answer->delete();
             }
         }
@@ -127,7 +129,6 @@ class MarkController extends Controller
             'dispatched_at' => date('Y-m-d H:i:s'),
             'expired_at'    => date('Y-m-d H:i:s',time() + 1800)
         ]);
-        $this->updateProgress($answer->problem->id);
         return response()->json([
             'ret'     => 200,
             'desc'    => 'success',
@@ -139,63 +140,6 @@ class MarkController extends Controller
                 'max_score'  => $answer->problem->max_score,
             ]
         ], 200);
-
-    }
-
-    private function updateProgress($problem_id = null)
-    {
-        if(empty(Cache::get('progress', null))){
-            $progress = [];
-            $all = Answer::count();
-            $solved = AnswerDispatch::where('solved',true)->count();
-            $marking = AnswerDispatch::where('solved',false)->where('expired_at', '>', date('Y-m-d H:i:s'))->count();
-            $progress['all'] = [
-                'title'         => '总进度',
-                'progress'      => round(100.0*$solved/$all, 2),
-                'all'           => $all,
-                'solved'        => $solved,
-                'marking'       => $marking,
-                'group'         => '米娜桑'
-            ];
-            $i = 1;
-            foreach(Problem::get() as $problem){
-                $all = Answer::where('problem_id',$problem->id)->count();
-                $solved = AnswerDispatch::where('problem_id',$problem->id)->where('solved',true)->count();
-                $marking = AnswerDispatch::where('problem_id',$problem->id)->where('solved',false)->where('expired_at', '>', date('Y-m-d H:i:s'))->count();
-                $progress['p'.$problem->id] = [
-                    'title'         => "第{$i}题",
-                    'progress'      => round(100.0*$solved/$all, 2),
-                    'all'           => $all,
-                    'solved'        => $solved,
-                    'marking'       => $marking,
-                    'group'         => $problem->group->name
-                ];
-                $i ++;
-            }
-            Cache::put('progress', json_encode($progress));
-        }else{
-            $progress = json_decode(Cache::get('progress', null),true);
-            $all = Answer::count();
-            $solved = AnswerDispatch::where('solved',true)->count();
-            $marking = AnswerDispatch::where('solved',false)->where('expired_at', '>', date('Y-m-d H:i:s'))->count();
-            $progress['all']['progress'] = round(100.0*$solved/$all, 2);
-            $progress['all']['all']      = $all;
-            $progress['all']['solved']   = $solved;
-            $progress['all']['marking']  = $marking;
-
-            if(!empty($problem_id)) {
-                $problem = Problem::find($problem_id);
-                $all = Answer::where('problem_id',$problem->id)->count();
-                $solved = AnswerDispatch::where('problem_id',$problem->id)->where('solved',true)->count();
-                $marking = AnswerDispatch::where('problem_id',$problem->id)->where('solved',false)->where('expired_at', '>', date('Y-m-d H:i:s'))->count();
-                $progress['p'.$problem->id]['progress'] = round(100.0*$solved/$all, 2);
-                $progress['p'.$problem->id]['all']      = $all;
-                $progress['p'.$problem->id]['solved']   = $solved;
-                $progress['p'.$problem->id]['marking']  = $marking;
-            }
-            Cache::put('progress', json_encode($progress));
-        }
-
 
     }
 }
