@@ -130,8 +130,9 @@ class Problem extends Model
         $disable_answer = [];
         foreach($answers as $answer)
             $all_answer[] = $answer->id;
-        foreach($dispatched_answers as $answer)
-            $disable_answer[] = $answer->id;
+        foreach($dispatched_answers as $dispatched_answer)
+            $disable_answer[] = $dispatched_answer->answer->id;
+
         $available_answers = array_diff($all_answer,$disable_answer);
         if(empty($available_answers)){
             return null;
