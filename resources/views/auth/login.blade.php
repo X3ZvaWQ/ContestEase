@@ -24,7 +24,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="password" class="bmd-label-floating">密码</label>
+                            <label for="password" class="bmd-label-floating">密码 (邮箱全部小写)</label>
                             <input type="password" class="form-control" name="password" id="password" required>
                             @if ($errors->has('password'))
                                 <span role="alert" class="text-danger" style="font-size: .85rem">

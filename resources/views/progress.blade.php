@@ -97,7 +97,7 @@
             }
             var confirm = window.confirm('是否要切换到目标题目？切换之后在下一次刷新该页面之前将会一直拉取目标题目的答卷。');
             if(confirm){
-                var default_id = id;
+                window.default_id = id;
                 requestAnswer({
                     force : true,
                     problem_id : id
