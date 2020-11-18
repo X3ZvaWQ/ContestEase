@@ -3,10 +3,9 @@
 namespace App;
 
 use App\Models\Eloquent\Answer;
+use App\Models\Eloquent\AnswerDispatch;
 use App\Models\Eloquent\Problem;
 use App\Models\Eloquent\GroupProblem;
-
-
 
 class Cmd
 {
@@ -14,7 +13,7 @@ class Cmd
     {
         $insert_log = storage_path('app').'/result_insert.json';
         $insert_datas = json_decode(file_get_contents($insert_log),true);
-        $i = [0,0];
+        $i = [0,0,0,0];
         foreach($insert_datas as $insert) {
             $i[0] ++;
             $answer = Answer::where([
@@ -26,9 +25,11 @@ class Cmd
                     $answer->content      = $insert['content'];
                     $answer->updated_at   = $insert['created_at'];
                     $answer->save();
+                    $i[2] ++;
                 }else{
                     $answer->content_old  = $insert['content'];
                     $answer->save();
+                    $i[3] ++;
                 }
             }else{
                 Answer::create([
@@ -40,7 +41,7 @@ class Cmd
                 ]);
             }
         }
-        echo "{$i[0]} inserts {$i[1]} no gogogo \n";
+        echo "{$i[0]} inserts {$i[1]} no gogogo {$i[2]} aaa {$i[3]} bbb \n";
         $update_log = storage_path('app').'/result_update.json';
         $update_datas = json_decode(file_get_contents($update_log),true);
         $i = [0,0,0];
@@ -64,12 +65,24 @@ class Cmd
 
     public static function aaa()
     {
-        foreach(Problem::get() as $p)
-        {
-            GroupProblem::insert([
-                'group_id' => 1,
-                'problem_id' => $p->id
-            ]);
-        } 
+        $i = 0;
+        $answers = Answer::get();
+        foreach($answers as $answer){
+            $dispatch = $answer->dispatch;
+            $last_dispatch = AnswerDispatch::find($dispatch->id - 1);
+            if(empty($dispatch)) {
+                $i ++;
+                echo "{$i}: pid {$answer->problem_id}  aid {$answer->id}  not found \n";
+                continue;
+            }
+            if($answer->content === null) {
+                $i ++;
+                if(empty($last_dispatch)){
+                    echo "{$i}: pid {$dispatch->problem_id}  aid {$dispatch->answer_id}  uid {$answer->user_id} score {$dispatch->score} last_score {None}\n";
+                }else{
+                    echo "{$i}: pid {$dispatch->problem_id}  aid {$dispatch->answer_id}  uid {$answer->user_id} score {$dispatch->score} last_score {$last_dispatch->score}\n";
+                }
+            }
+        }
     }
 }

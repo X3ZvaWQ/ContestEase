@@ -16,4 +16,9 @@ class AnswerDispatch extends Model
     {
         return $this->belongsTo('App\Models\Eloquent\Answer');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Eloquent\User');
+    }
 }

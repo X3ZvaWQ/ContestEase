@@ -60,4 +60,9 @@ class Answer extends Model
     {
         return $this->belongsTo('App\Models\Eloquent\Problem');
     }
+
+    public function dispatch()
+    {
+        return $this->hasOne('App\Models\Eloquent\AnswerDispatch');
+    }
 }
