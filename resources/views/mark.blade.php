@@ -123,7 +123,7 @@
     window.default_id = null;
 
     window.addEventListener("load",function() {
-        loadJsAsync("https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs/loader.js");
+        loadJsAsync("https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.26.1/min/vs/loader.js");
         hljs.initHighlighting();
     },false);
 
@@ -136,15 +136,15 @@
         body.appendChild(jsNode);
 
         jsNode.onload = function() {
-            require.config({ paths: { 'vs': 'https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs' }});
+            require.config({ paths: { 'vs': 'https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.26.1/min/vs' }});
 
             window.MonacoEnvironment = {
                 getWorkerUrl: function(workerId, label) {
                     return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
                         self.MonacoEnvironment = {
-                            baseUrl: 'https://acm.njupt.edu.cn/static/library/monaco-editor/min/'
+                            baseUrl: 'https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.26.1/min/'
                         };
-                        importScripts('https://acm.njupt.edu.cn/static/library/monaco-editor/min/vs/base/worker/workerMain.js');`
+                        importScripts('https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.26.1/min/vs/base/worker/workerMain.js');`
                     )}`;
                 }
             };

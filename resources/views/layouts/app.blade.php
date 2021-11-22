@@ -105,8 +105,8 @@
             </div>
         </loading-curtain>
         <!-- Loading Style -->
-        <link rel="stylesheet" href="https://acm.njupt.edu.cn/static/library/bootstrap-material-design/dist/css/bootstrap-material-design.min.css">
-        <link rel="stylesheet" href="https://acm.njupt.edu.cn/static/fonts/MDI-WXSS/MDI.css">
+        <link rel="stylesheet" href="/static/css/bootstrap-material-design.min.css">
+        <link rel="stylesheet" href="/static/fonts/MDI-WXSS/MDI.css">
 
         <!--Header-->
 
@@ -199,9 +199,9 @@
         @yield('template')
         <!--Footer-->
 
-        <script src="https://acm.njupt.edu.cn/static/library/jquery/dist/jquery.min.js"></script>
-        <script src="https://acm.njupt.edu.cn/static/library/popper.js/dist/umd/popper.min.js"></script>
-        <script src="https://acm.njupt.edu.cn/static/library/bootstrap-material-design/dist/js/bootstrap-material-design.min.js"></script>
+        <script src="/static/library/jquery/dist/jquery.min.js"></script>
+        <script src="/static/js/popper.min.js"></script>
+        <script src="/static/js/bootstrap-material-design.js"></script>
         <script>
             $(document).ready(function () { $('body').bootstrapMaterialDesign(); });
             window.addEventListener("load",function() {
