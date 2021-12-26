@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'auth:api', 'namespace' => 'Api'], function () {
+
+Route::group(['middleware' => 'auth', 'namespace' => 'Api'], function () {
     Route::get('user', 'UserController@info');
     Route::get('status', 'ContestController@status');
     Route::get('notice', 'NoticeController@fetch');

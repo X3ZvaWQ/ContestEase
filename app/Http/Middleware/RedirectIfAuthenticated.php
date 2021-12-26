@@ -19,8 +19,9 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             return redirect('/home');
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         return $next($request);
     }
 }

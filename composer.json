@@ -15,6 +15,7 @@
         "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
+        "tymon/jwt-auth": "^1.0",
         "y-ui/laravel-running-time": "^1.1"
     },
     "require-dev": {
